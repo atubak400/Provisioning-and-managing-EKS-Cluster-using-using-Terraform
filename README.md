@@ -1,8 +1,10 @@
-# Step 1: Provisioning-and-managing-EKS-Cluster-using-using-Terraform
+# Provisioning-and-managing-EKS-Cluster-using-using-Terraform
 
 ![EKS](./img/1.png)
 
 Elastic Kubernetes Service is a managed Kubernetes service provided by AWS, which automates key tasks such as deploying, managing, and scaling containerized applications. EKS runs Kubernetes control plane instances across multiple Availability Zones to ensure high availability. It integrates seamlessly with AWS services, providing a scalable and secure environment for running applications.
+
+# Step 1: 
 
 ### 1. Install aws cli
 
