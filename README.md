@@ -262,7 +262,7 @@ It segregates resources into public, private, and intra subnets, which is a good
 The EKS setup includes managed node groups with spot instances, which can be cost-effective.
 Tags are used extensively for resource identification and could potentially integrate with cost allocation and management tools.
 
-# Step 4: Run theese codes to deploy resources
+# Step 4: Run these codes to deploy resources
 
 ```
 terraform fmt
