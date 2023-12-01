@@ -284,31 +284,31 @@ terraform apply -auto-approve
 
 ![EKS](./img/2.png)
 
-==
+---
 
 ![EKS](./img/3.png)
 
-===
+---
 
 * EC2 Instance created
 
 ![EKS](./img/4.png)
 
-===
+---
 
 * VPC created
 
 ![EKS](./img/5.png)
 
-==
+---
 
 ![EKS](./img/6.png)
 
-=
+***
 
 ![EKS](./img/7.png)
 
-==
+---
 
 ![EKS](./img/8.png)
 
