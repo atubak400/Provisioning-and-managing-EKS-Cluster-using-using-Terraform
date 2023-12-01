@@ -229,7 +229,7 @@ module "eks" {
 
 # Step 3: main.tf code explanation 2
 
-## This Terraform configuration script sets up an Amazon Web Services (AWS) infrastructure, including a Virtual Private Cloud (VPC), subnets, and an Elastic Kubernetes Service (EKS) cluster. Here's a breakdown of the key components and their purpose:
+* This Terraform configuration script sets up an Amazon Web Services (AWS) infrastructure, including a Virtual Private Cloud (VPC), subnets, and an Elastic Kubernetes Service (EKS) cluster. Here's a breakdown of the key components and their purpose:
 
 ## Provider Configuration:
 
