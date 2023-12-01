@@ -313,7 +313,143 @@ terraform apply -auto-approve
 ![EKS](./img/8.png)
 
 
-# Step 6: Destroy the infrastructure to avoid unnecessary cost
+# Step 6: If you choose to modularize main.tf
+
+* eks.tf
+```
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.15.1"
+
+  cluster_name                   = var.name
+  cluster_endpoint_public_access = true
+
+  cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+  }
+
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnets
+  control_plane_subnet_ids = module.vpc.intra_subnets
+
+  eks_managed_node_group_defaults = {
+    ami_type                              = "AL2_x86_64"
+    instance_types                        = ["m5.large"]
+    attach_cluster_primary_security_group = true
+  }
+
+  eks_managed_node_groups = {
+    eks-cluster-wg = {
+      min_size       = 1
+      max_size       = 2
+      desired_size   = 1
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
+      tags = {
+        ExtraTag = "helloworld"
+      }
+    }
+  }
+
+  tags = var.tags
+}
+```
+
+locals.tf
+```
+locals {
+  tags = {
+    Example = var.name
+  }
+}
+```
+
+provider.tf
+```
+provider "aws" {
+  region = var.region
+}
+```
+
+variables.tf
+```
+variable "name" {
+  description = "A unique name for the resources being created."
+  default     = "eks-cluster"
+}
+
+variable "region" {
+  description = "The AWS region in which to deploy."
+  default     = "us-east-1"
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC."
+  default     = "10.123.0.0/16"
+}
+
+variable "azs" {
+  description = "A list of availability zones in the region."
+  default     = ["us-east-1a", "us-east-1b"]
+}
+
+variable "public_subnets" {
+  description = "A list of public subnets inside the VPC."
+  default     = ["10.123.1.0/24", "10.123.2.0/24"]
+}
+
+variable "private_subnets" {
+  description = "A list of private subnets inside the VPC."
+  default     = ["10.123.3.0/24", "10.123.4.0/24"]
+}
+
+variable "intra_subnets" {
+  description = "A list of intra subnets inside the VPC."
+  default     = ["10.123.5.0/24", "10.123.6.0/24"]
+}
+
+variable "tags" {
+  description = "A map of tags to add to all resources."
+  default     = { Example = "eks-cluster" }
+}
+```
+
+vpc.tf
+```
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 4.0"
+
+  name = var.name
+  cidr = var.vpc_cidr
+
+  azs             = var.azs
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+  intra_subnets   = var.intra_subnets
+
+  enable_nat_gateway = true
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
+}
+```
+
+
+# Step 7: Destroy the infrastructure to avoid unnecessary cost
 
 ```
 terraform destroy
