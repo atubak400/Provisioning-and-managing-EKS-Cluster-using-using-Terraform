@@ -292,7 +292,7 @@ terraform apply -auto-approve
 
 * EC2 Instance created
 
-![EKS](./img/4.png)
+![EKS](./img/4a.png)
 
 ---
 
